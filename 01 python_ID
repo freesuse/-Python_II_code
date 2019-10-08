@@ -1,0 +1,53 @@
+问题描述："0001.abadicddws" 是ID格式,要求ID格式是以点号分割,左边是4位从1开始的整数,右边是10位随机小写英文字母; 请依次生成前100个ID的列表
+测试01：初试版
+import random
+
+#生成id
+str1 = ''
+for i in range(1,101):
+    if i < 10:
+        str1 = '{}{}'.format('000',str(i))
+    elif i < 100:
+        str1 = '{}{}'.format('00',str(i))
+    else:
+        str1 = '{}{}'.format('0',str(i))
+    
+    #10位随机小写英文字母
+    lst01 = []
+    for _ in range(10):
+        if len(lst01) <= 10:
+            lst01.append(chr(random.randint(97,122)))
+        else:
+            break
+    #print(lst01)
+    
+    #生成随机的字符串
+    str2 = ''.join(lst01)
+    #print(str2)
+
+    print('{}.{}'.format(str1,str2))
+
+#一句话写法
+import random
+import string
+['{:04}.{}'.format(n,''.join(chr(random.randint(97,122)) for _ in range(10))) for n in range(1,101)]
+分析：
+#随机产生10个字符组成字符串
+''.join([chr(random.randint(97,122)) for _ in range(10)])
+
+将 '{:04}.{}'.format(n,''.join(chr(random.randint(97,122)) for _ in range(10))) 作为 for n in range(1,101) 的返回值
+
+['{:04}.{}'.format(n,''.join([random.choice(bytes(range(97,123)).decode()) for _ in range(10)])) for n in range(1,101)]
+
+['{:04}.{}'.format(n,''.join(random.choice(string.ascii_lowercase) for _ in range(10))) for n in range(1,101)]
+
+最后输出的结果为：
+['0001.hgwxcdlckd',
+ '0002.upaoimqlih',
+ '0003.xsxzyedoyb',
+...
+ '0098.wvlutwnjhe',
+ '0099.czvcjedhnv',
+ '0100.sbdojbtihl']
+
+
