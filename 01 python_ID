@@ -30,15 +30,19 @@ for i in range(1,101):
 #一句话写法
 import random
 import string
+#写法一
 ['{:04}.{}'.format(n,''.join(chr(random.randint(97,122)) for _ in range(10))) for n in range(1,101)]
 分析：
 #随机产生10个字符组成字符串
 ''.join([chr(random.randint(97,122)) for _ in range(10)])
-
+#或
+''.join(chr(random.randint(97,122)) for _ in range(10))
 将 '{:04}.{}'.format(n,''.join(chr(random.randint(97,122)) for _ in range(10))) 作为 for n in range(1,101) 的返回值
 
+#写法二：
 ['{:04}.{}'.format(n,''.join([random.choice(bytes(range(97,123)).decode()) for _ in range(10)])) for n in range(1,101)]
 
+#写法三：
 ['{:04}.{}'.format(n,''.join(random.choice(string.ascii_lowercase) for _ in range(10))) for n in range(1,101)]
 
 最后输出的结果为：
