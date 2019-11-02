@@ -1,0 +1,12 @@
+def factorial_num(n,ride = 1):
+    ride = ride * n
+    if n == 1:  #退出条件
+        print('阶乘是：{}'.format(ride))
+    else:
+        factorial_num(n-1,ride)
+
+factorial_num(4)
+
+结果：
+阶乘是：24
+
