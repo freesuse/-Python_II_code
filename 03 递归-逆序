@@ -1,0 +1,17 @@
+#问题描述：将一个数逆序放入列表中,例如1234 => [4,3,2,1]
+#测试01：
+def reverse_order(num,list_str = list()):
+    str_long = len(num) - 1
+    list_str.append(int(num[str_long]))  #每次取最后一个元素
+    if str_long == 0:  #已经到了结尾
+        print('逆序列表为：{}'.format(list_str))
+        return
+    else:
+        reverse_order(num[:str_long],list_str)
+
+num = input("please a number：")
+reverse_order(num)
+
+#结果：
+please a number：123456789
+逆序列表为：[9, 8, 7, 6, 5, 4, 3, 2, 1]
