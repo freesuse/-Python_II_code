@@ -15,3 +15,18 @@ reverse_order(num)
 #结果：
 please a number：123456789
 逆序列表为：[9, 8, 7, 6, 5, 4, 3, 2, 1]
+
+
+测试02：使用对象的默认值
+分析：此处列表对象list_str = list()的默认值每次都在改变存在于同一个defaults中，因此不需要再次传输
+def reverse_order(num,list_str = list()):
+    str_long = len(num) - 1
+    list_str.append(int(num[str_long]))  #每次取最后一个元素
+    if str_long == 0:  #已经到了结尾
+        print('逆序列表为：{}'.format(list_str))
+        return
+    else:
+        reverse_order(num[:str_long]) #此处调用同一个函数对象
+
+num = input("please a number：")
+reverse_order(num)
