@@ -1,0 +1,77 @@
+原理讲解：
+<1> 每3个字符为一个单位,每个字符占8位,三个字符一共占24位
+<2> 从左向右,每6位为一个单元,3个字符一共4个单元
+<3> 对于上述新的1单元包含4个段的位打印其每个单元的十进制数
+<4> 通过十进制数在base64编码中找到对应的字符,从左到右依次打印
+特殊情况：
+a. 对于1中的1个单元不够三个字符如果缺少一个字符,则转换为24位时只取前面18位,最后面补充一个'='
+b. 对于1中的1个单元不够三个字符如果缺少两个字符,则转换为24位时只取前面12位,最后面补充两个'='
+
+
+# 获取0-127对应的ascii码
+asciiList = []  #定义一个存储ascii码的空列表 key[ascii码值]='ascii码'
+for i in range(128):
+    asciiList.append(chr(i))
+#print(asciiList)
+
+# 获取base64对照表,二进制数值->字符
+baseDict = {}
+for j in range(64):
+    if j <= 25:
+	    baseDict["{:0>6}".format(bin(j)[2:])] = chr(j+65)
+    elif j <= 51:
+	    baseDict["{:0>6}".format(bin(j)[2:])] = chr(j+71)
+    elif j <= 61:
+	    baseDict["{:0>6}".format(bin(j)[2:])] = chr(j-4)
+    else:
+        baseDict["{:0>6}".format(bin(62)[2:])] = '+'
+        baseDict["{:0>6}".format(bin(63)[2:])] = '/'
+#print(baseDict)
+
+# 获取用户的原码
+primaryCode = input("please input a num：")
+
+#步骤1：将字符串每三个位一个单元放入一个列表
+primaryCodeList = []
+start = 0
+while True:
+    end = start + 3
+    if end < len(primaryCode):
+        primaryCodeList.append(primaryCode[start:end])
+    else:
+        end = len(primaryCode)
+        primaryCodeList.append(primaryCode[start:end])
+        break
+    start = start + 3
+#print(primaryCodeList)
+
+#primaryCodeList = ['hjk', 'lzx', 'cvb', 'nm']
+#步骤2：将列表的每个字段的值转换位二进制
+binDict = {}  #存储每3个字符一个单元的二进制
+for s in range(len(primaryCodeList)): #获取每个primaryCodeList列表元素对应的二进制组合为一个单元
+    binDict[s] = ''.join(['{:0<8}'.format(i) for i in [bin(ord(f))[2:] for f in primaryCodeList[s]]])
+    if len(primaryCodeList[s]) < 3:
+        binDict[s] = '{:0<24}'.format(binDict[s])
+#print(binDict)
+
+#步骤3：将上述的二进制按照6个位为一个单位打印每3个字符的base64编码
+baseBinList = []
+for k,v in binDict.items():
+    if k == len(primaryCodeList) - 1:
+        if len(primaryCodeList[-1]) == 1:  #==
+            baseBinList.append('{}{}'.format(baseDict(v[:6]),'=='))
+        if len(primaryCodeList[-1]) == 2:  #=
+            baseBinList.append('{}{}'.format(baseDict(v[-1])))
+            baseBinList.append('{}{}'.format(baseDict(v[-2]), '='))
+    else:
+        i = 0
+        while True:
+            if i < 24:
+                baseBinList.append(baseDict(v[i:i+6]))
+            else:
+                break
+            i = i + 6
+
+#步骤4：将baseBinList列表的元素组合为一个字符串
+print(''.join(baseBinList))
+
