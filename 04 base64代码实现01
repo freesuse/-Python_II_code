@@ -85,7 +85,7 @@ for k,v in binDict.items():
     else:
         i = 0
         while True:
-            if i < 25:
+            if i < 24:
                 baseBinList.append(baseDict[v[i:i+6]])
                 i = i + 6
             else:
