@@ -26,3 +26,11 @@ def eat(surplus,day): #剩余的桃子
         eat(surplus=totalp,day=day-1)
 
 eat(surplus=1,day=9)
+
+#解法3：从第1天开始计数
+def peach(days=1):
+    if days == 10:
+        return 1
+    return (peach(days+1)+1)*2
+print(peach())
+
