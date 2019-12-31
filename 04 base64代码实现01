@@ -31,28 +31,34 @@ for j in range(64):
 # 获取用户的原码
 primaryCode = input("please input a num：")
 
-#步骤1：将字符串每三个位为一个单元放入一个列表中
+#步骤1：将字符串每三个位,为一个单元放入一个列表中
 primaryCodeList = []
-start = 0
+start = 0  #默认字符串的起始下标
 while True:
-    end = start + 3
-    if end < len(primaryCode):
+    end = start + 3  #默认输入的字符长度上限
+    if end < len(primaryCode):  #输入的字符串的长度大于3则先截取3个字符
         primaryCodeList.append(primaryCode[start:end])
     else:
-        end = len(primaryCode)
+        end = len(primaryCode)  #输入的字符串长度小于3,则直接放入列表,且退出当前循环
         primaryCodeList.append(primaryCode[start:end])
         break
-    start = start + 3
+    start = start + 3  #起始的位置加3
 #print(primaryCodeList)
 
 #primaryCodeList = ['hjk', 'lzx', 'cvb', 'nm']
-#步骤2：将列表的每个字段的值转换位二进制
-binDict = {}  #存储每3个字符一个单元的二进制
+#步骤2：将列表的每个字段的值转换为二进制
+binDict = {}  #存储每3个字符一个单元的二进制字典,结构为 数字索引:二进制字符串
 for s in range(len(primaryCodeList)): #获取每个primaryCodeList列表元素对应的二进制组合为一个单元(此处每个value必须占据24位)
     binDict[s] = ''.join(['{:0>8}'.format(i) for i in [bin(ord(f))[2:] for f in primaryCodeList[s]]])
     if len(primaryCodeList[-1]) < 3:  #不够三个单位的特殊处理
         binDict[s] = '{:0<24}'.format(binDict[s])
 print(binDict)
+
+#分析：
+#ord(f)  #获取该字符对应的ascii码值
+#bin()   #获取该ascii码对应的二进制,格式为 '0bxxxx'
+#bin(ord(f))[2:]  #从上述格式的第二个位置取到结尾(即:只取数据部分)
+#'{:0>8}'.format(i)  #右对齐不够使用0进行补充
 
 #步骤3：将上述的二进制按照6个位为一个单位打印每3个字符的base64编码
 baseBinList = []
