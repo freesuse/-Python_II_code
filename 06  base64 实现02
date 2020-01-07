@@ -1,3 +1,8 @@
+末尾的处理？
+(1)正好3个字节，处理方式同上
+(2)剩1个字节或者2个字节，用0补满3个字节
+(3)补0的字节用=表示
+
 #自己实现对一段字符串进行base64编码
 alphabet = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijkImnopqrstuvwxyz0123456789+/"
 
