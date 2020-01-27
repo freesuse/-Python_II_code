@@ -1,0 +1,29 @@
+问题：指定一个源文件,实现copy到目标目录
+例如：把 /tmp/test.txt 拷贝到 /tmp/test1.txt
+
+1) 分析：实现思想
+<1>获取原文件的指针,读取原文件的内容
+<2>创建一个新文件,将原文件的内容写入新文件里面
+
+2)代码实现
+测试01：基本功能的实现
+f = open("/home/python/freefedora/projects/cmdb/day01/access.log")  #获取文件的指针
+t = f.read()
+c = f.close()
+d = open("/home/python/freefedora/projects/cmdb/day01/dict_access.log","w")  #创建目标文件
+s = d.write(t)  #写入目标文件
+c = d.close()
+
+测试02：部分代码优化
+#原文件操作
+with open("/home/python/freefedora/projects/cmdb/day01/access.log") as f:
+    t = f.read()
+#新文件操作
+with open("/home/python/freefedora/projects/cmdb/day01/dict_access.log","w") as d:
+    s = d.write(t)
+
+测试03：嵌套操作
+with open("/home/python/freefedora/projects/cmdb/day01/access.log") as f:
+    with open("/home/python/freefedora/projects/cmdb/day01/dict_access.log","w") as d:
+        t = f.read()    #原文件操作
+        s = d.write(t)  #新文件操作
