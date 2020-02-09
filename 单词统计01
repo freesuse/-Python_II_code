@@ -1,0 +1,52 @@
+问题：有一个文件,对其进行单词统计,不区分大小写,并显示单词重复最多的10个单词
+注：本次统计的文章为：我有一个梦想英文原文
+
+思路分析：
+(1) 一次读取一行
+(2) 对每行的单词进行断开和统计
+(3) 相同的单词记录出现的次数
+(4) 统计出现最多的前10个
+
+to_list = [0]  # 统计次数使用
+dup_removal = []  # 存储去重单词之后的列表
+new_dup_removal = []  # 新排序后的列表
+new_to_list = [0]
+remove_to_list = []
+remove01_to_list = []
+remove_copy_to_list = []
+new01_dup_removal = []
+new02_dup_removal = []
+with open('E:\py_file_test\dream_test01.txt') as f:
+    t = f.readline()
+    list_dict = t.split()  # 按照空格对单词进行切割
+    # 统计每个单词出现的次数
+    to_list = to_list * len(list_dict)
+    for dic in list_dict:
+        if dic not in dup_removal:
+            dup_removal.append(dic)  # 得到不重复单词的列表
+            to_list[dup_removal.index(dic)] += 1
+        else:
+            to_list[dup_removal.index(dic)] += 1  # 统计出现的次数
+
+    # 按照次数进行排序,取出排序前10个
+    new_to_list = to_list[:]
+    new_dup_removal = dup_removal[:]
+    for i in range(len(new_to_list)):
+        for j in range(i + 1, len(new_to_list)):
+            if new_to_list[i] < new_to_list[j]:
+                new_to_list[j], new_to_list[i] = new_to_list[i], new_to_list[j]
+
+    # 重新对new_to_list列表进行组合,排除0的字符
+    for num_zo in new_to_list:
+        if num_zo > 0:
+            remove_to_list.append(num_zo)
+
+    # 按照索引的顺序对单词进行排序,获取新的字符列表
+    remove01_to_list = to_list[:]
+    remove_copy_to_list = remove_to_list[:]  # 保护原数据索引
+    new01_dup_removal = new_dup_removal[:]  # 保护原始数据字符列表
+    for str_list in remove_to_list:  # 获取排序后的一个元素在原来列表的索引
+        new02_dup_removal.append(new01_dup_removal.pop(remove01_to_list.index(str_list)))
+
+    for doc02 in new02_dup_removal:  # 最终结果的输出
+        print("{} : {}".format(doc02, remove_to_list[new02_dup_removal.index(doc02)]))
