@@ -32,3 +32,55 @@ print(sorted(d.items(), key=lambda item:item[1], reverse=True))
 for k in d:
     if k.find('path') > -1:
         print(k)
+
+
+测试04：函数版本二
+注：此种方式得优势
+1)可以处理连续特殊字符
+2)可以处理最后一个单词后面没有特殊字符得样例
+不足：'os.path.*dirname((path).   os.path' 字符串没有很好处理
+
+chars = set(r"""~!@#$%^&*()_+{}[]|\/"'`=;:.-<>""")  #特殊字符常量表
+
+def makekey_new(x):  #多符号切割处理
+    key = x.lower()  #处理 os.path.*dirname((path).   os.path
+    #切割多个元素 list，使用特殊符号替换处理，从已知的推断未知
+    ret = []
+    start = 0
+    for i, c in enumerate(key):  #字符串拆分为带字符的索引列表
+        if c in chars:  #如果属于特殊字符列表
+            if start == i:  #防止特殊字符挨着
+                start = i + 1
+                continue
+            ret.append(key[start:i])
+            start = i + 1
+        # else:
+        #     pass
+    else:  #缺少最后一个切片
+        if start < len(key):  #添加最后一个不是特殊字符的单词
+            ret.append(key[start:])
+    return ret  #一个集合类型
+
+# print(makekey_new('os.path.*dirname((path).'))
+# print(makekey_new('os.path'))
+# print(makekey_new('os*'))
+# print(makekey_new('*os'))
+
+encod = 'utf-8'
+d = {}  #存储单词的字典
+
+with open('E:\py_file_test\sample.txt',encoding=encod) as f:
+    for line in f:
+        words = line.split()  #按照空格切割一个单词列表
+        for wordlist in map(makekey_new, words):  #大小写忽略(全部转换为小写)
+            for word in wordlist:
+                d[word] = d.get(word, 0) + 1  #统计单词出现的个数
+
+#top 10  按照value进行排序
+print(sorted(d.items(), key=lambda item:item[1], reverse=True))
+
+#打印所有带有path的key
+for k in d:
+    if k.find('path') > -1:
+        print(k)
+
