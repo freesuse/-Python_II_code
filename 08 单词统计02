@@ -16,3 +16,22 @@ with open('E:\py_file_test\sample.txt',encoding=encod) as f:
 
 #top 10  按照value进行排序
 print(sorted(d.items(), key=lambda item:item[1], reverse=True))
+
+
+测试02：转换所有的大写为小写
+encod = 'utf-8'
+d = {}  #存储单词的字典
+
+with open('E:\py_file_test\sample.txt',encoding=encod) as f:
+    for line in f:
+        words = line.split()  #按照空格切割一个单词列表
+        for word in map(str.lower, words):  #大小写忽略(全部转换为小写)  map(lambda x:x.lower(), words)
+            d[word] = d.get(word, 0) + 1  #统计单词出现的个数
+
+#top 10  按照value进行排序
+print(sorted(d.items(), key=lambda item:item[1], reverse=True))
+
+#打印所有带有path的key
+for k in d:
+    if k.find('path') > -1:
+        print(k)
