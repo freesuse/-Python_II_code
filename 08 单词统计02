@@ -1,0 +1,18 @@
+代码主干的书写步骤：
+1)可以正常读取数据
+2)一行一行进行迭代
+3)统计算法逻辑实现
+<1>统计每个词出现的次数,使用字典进行统计
+
+测试01：忽略单词大小写
+encod = 'utf-8'
+d = {}  #存储单词的字典
+
+with open('E:\py_file_test\sample.txt',encoding=encod) as f:
+    for line in f:
+        words = line.split()  #按照空格切割一个单词列表
+        for word in words:  #忽略大小写
+            d[word] = d.get(word, 0) + 1  #统计单词出现的个数
+
+#top 10  按照value进行排序
+print(sorted(d.items(), key=lambda item:item[1], reverse=True))
