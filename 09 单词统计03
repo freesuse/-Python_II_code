@@ -1,0 +1,34 @@
+测试03：函数写法
+注：迭代时如果对每个元素进行处理，建议使用map函数
+chars = set(r"""~!@#$%^&*()_+{}[]|\/"'`=;:.-<>""")  #特殊字符常量表
+
+#切割key的每个元素
+def makekey(x):
+    key = x.lower()  #处理 os.path.dirname(path)
+    #切割多个元素 list，使用特殊符号替换处理，从已知的推断未知
+    ret = []
+    for c in key:
+        if c in chars:
+            ret.append(' ')
+        else:
+            ret.append(c)
+    #"".join(ret)之后的结果 os path dirname path
+    return "".join(ret).split()  #一个集合类型
+
+encod = 'utf-8'
+d = {}  #存储单词的字典
+
+with open('E:\py_file_test\sample.txt',encoding=encod) as f:
+    for line in f:
+        words = line.split()  #按照空格切割一个单词列表
+        for wordlist in map(makekey, words):  #大小写忽略(全部转换为小写)
+            for word in wordlist:
+                d[word] = d.get(word, 0) + 1  #统计单词出现的个数
+
+#top 10  按照value进行排序
+print(sorted(d.items(), key=lambda item:item[1], reverse=True))
+
+#打印所有带有path的key
+for k in d:
+    if k.find('path') > -1:
+        print(k)
