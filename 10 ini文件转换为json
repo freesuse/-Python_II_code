@@ -1,0 +1,40 @@
+有一个配置文件test.ini内容如下，将其转换成json格式文件
+[DEFAULT]
+a = test
+[mysql]
+default-character-set=utf8
+a = 1000
+[mysqld]
+datadir =/dbserver/data
+port = 33060
+character-set-server=utf8
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+分析：ini文件的本质是字典套字典
+
+解决：代码示例如下
+
+import configparser
+import json
+
+src = 'test.ini'
+dst = 'test.json'
+
+cfg = configparser.ConfigParser()
+cfg.read(src)
+
+d = {}  #来自 cfg 内部的字典
+for k,v in cfg.items():
+    #print(k)
+    #print(cfg.items(k))
+    d[k] = dict(cfg.items(k))
+
+#print(d)
+with open(dst,'w+') as f:
+    json.dump(d,f)
+
+
+
+结果如下：
+{"DEFAULT": {"a": "test"}, "mysql": {"default-character-set": "utf8", "a": "1000"}, "mysqld": {"datadir": "/dbserver/data", "sql_mode": "NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES", "a": "test", "character-set-server": "utf8", "port": "33060"}}
+
